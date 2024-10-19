@@ -1,0 +1,74 @@
+@keyframes goBottom {
+  0% {
+    transform: translateY(20px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+
+  padding: 1rem;
+
+  border: solid 1px var(--gray-400);
+  border-radius: 8px;
+
+  background-color: var(--gray-500);
+
+  animation: goBottom 0.2s;
+
+  p {
+    font-size: 0.875rem;
+    line-height: 1.225rem;
+
+    color: var(--gray-100);
+
+    transition: all 0.1s;
+
+    &:hover {
+      cursor: pointer;
+      color: var(--gray-300);
+    }
+  }
+
+  .isChecked {
+    color: var(--gray-300);
+    text-decoration-line: line-through;
+    
+    &:hover {
+      cursor: default;
+    }
+  }
+
+  button {
+    line-height: 0;
+    padding: 0.125rem;
+    cursor: pointer;
+
+    border: none;
+    border-radius: 4px;
+
+    background-color: transparent;
+
+    transition: all 0.1s;
+
+    svg {
+      color: var(--gray-300);
+      cursor: pointer;
+    }
+
+    &:hover {
+      background-color: var(--gray-400);
+
+      svg {
+        color: var(--danger);
+      }
+    }
+  }
+}
