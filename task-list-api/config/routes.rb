@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users, skip: [:sessions, :registrations, :passwords]
+  resources :tasks, only: [:index, :create, :update, :destroy]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -11,6 +12,10 @@ Rails.application.routes.draw do
 
   namespace :api do
     get 'tasks', to: 'tasks#index'
+    post 'tasks', to: 'tasks#create'
+    put 'tasks', to: 'tasks#update'
+    delete 'tasks', to: 'tasks#destroy'
+
 
     post 'auth/sign-up', to: 'auth#sign_up'
     post 'auth/sign-in', to: 'auth#sign_in'

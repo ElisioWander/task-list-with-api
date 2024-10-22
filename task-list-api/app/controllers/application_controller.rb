@@ -7,7 +7,7 @@ class ApplicationController < ActionController::API
     jwt_decoded = JWT.decode token, ENV['JWT_SECRET_KEY'], true, { algorithm: 'HS256' }
     user(jwt_decoded)
   rescue StandardError
-    nill
+    nil
   end
 
   def current_user
