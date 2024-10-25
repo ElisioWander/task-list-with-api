@@ -1,0 +1,35 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  label {
+    color: var(--gray-100)
+  }
+
+
+  input {
+    flex: 1;
+    padding: 0.5rem 1rem;
+
+    line-height: 1.4rem;
+    border: solid 1px var(--gray-700);
+    border-radius: 8px;
+
+    color: var(--gray-100);
+    background-color: var(--gray-500);
+
+    &::placeholder {
+      color: var(--gray-300);
+    }
+
+    &:focus {
+      border: solid 1px var(--gray-700);
+    }
+  }
+
+  span {
+    color: red;
+    font-size: 0.8rem;
+  }
+}

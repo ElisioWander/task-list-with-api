@@ -1,0 +1,35 @@
+.Button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  padding: 0.5rem 1rem;
+
+  font-weight: bold;
+  font-size: 0.875rem;
+  cursor: pointer;
+
+  border: solid 1px transparent;
+  border-radius: 8px;
+
+  color: var(--gray-100);
+  background-color: var(--blue-dark);
+
+  transition: background 0.2s;
+
+  &:hover {
+    background-color: var(--blue);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: var(--blue-dark);
+    opacity: 0.8;
+  }
+
+  &:focus {
+    border: solid 1px var(--gray-700);
+  }
+}
