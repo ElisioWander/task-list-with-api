@@ -6,6 +6,7 @@ import { Input } from '../../Components/input'
 
 import styles from './Form.module.scss'
 import { z } from 'zod'
+import { useAuth } from '../../Context/AuthContext'
 
 const schema = z
   .object({
@@ -30,6 +31,8 @@ const schema = z
 type SignUpUserInterface = z.infer<typeof schema>
 
 export function Form() {
+  const { signUp, isAuthenticating } = useAuth()
+
   const {
     handleSubmit,
     register,
@@ -39,10 +42,7 @@ export function Form() {
   })
 
   async function onSubmit(signUpUserData: SignUpUserInterface) {
-    console.log('entrou')
-    // signUp({
-    //   data: signUpUserData,
-    // })
+    signUp(signUpUserData)
   }
 
   return (
@@ -69,7 +69,7 @@ export function Form() {
         {...register('passwordConfirmation')}
       />
 
-      <Button type="button" onClick={handleSubmit(onSubmit)}>
+      <Button isLoading={isAuthenticating} onClick={handleSubmit(onSubmit)}>
         Cadastre-se
       </Button>
     </form>

@@ -1,9 +1,9 @@
 import { Trash } from 'phosphor-react'
 import { useModal } from '../../../Context/ModalContext'
 import { useTasks } from '../../../Context/TasksContext'
-import { Checkbox } from '../../CheckBox'
 
 import styles from './Task.module.scss'
+import { Checkbox } from '../../../Components/CheckBox'
 
 type TaskData = {
   id: number

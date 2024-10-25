@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { Button } from '../../Components/Button'
 import { Input } from '../../Components/input'
 
+import { useAuth } from '../../Context/AuthContext'
 import styles from './Form.module.scss'
 import { z } from 'zod'
 
@@ -18,6 +19,8 @@ const schema = z.object({
 type SignInUserInterface = z.infer<typeof schema>
 
 export function Form() {
+  const { signIn, isAuthenticating } = useAuth()
+
   const {
     handleSubmit,
     register,
@@ -27,10 +30,7 @@ export function Form() {
   })
 
   async function onSubmit(signInUserData: SignInUserInterface) {
-    console.log('entrou')
-    // signUp({
-    //   data: signUpUserData,
-    // })
+    signIn(signInUserData)
   }
 
   return (
@@ -54,7 +54,9 @@ export function Form() {
         <a href="#">Esqueci minha senha</a>
       </div>
 
-      <Button onClick={handleSubmit(onSubmit)}>Entrar</Button>
+      <Button isLoading={isAuthenticating} onClick={handleSubmit(onSubmit)}>
+        Entrar
+      </Button>
     </form>
   )
 }

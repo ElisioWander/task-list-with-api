@@ -3,15 +3,34 @@ import styles from './Button.module.scss'
 
 type ButtonProps = {
   endIcon?: ReactNode
+  isLoading?: boolean
 } & ButtonHTMLAttributes<HTMLButtonElement>
 
 export function Button(props: ButtonProps) {
-  const { endIcon, children, type = 'button', ...rest } = props
+  const {
+    endIcon,
+    isLoading = false,
+    children,
+    type = 'button',
+    disabled = false,
+    ...rest
+  } = props
 
   return (
-    <button type={type} {...rest} className={styles.Button}>
-      {children}
-      {endIcon}
+    <button
+      type={type}
+      disabled={disabled || isLoading}
+      {...rest}
+      className={styles.Button}
+    >
+      {isLoading ? (
+        <span className={styles.spinner} />
+      ) : (
+        <>
+          {children}
+          {endIcon}
+        </>
+      )}
     </button>
   )
 }

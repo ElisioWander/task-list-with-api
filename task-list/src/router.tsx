@@ -1,15 +1,19 @@
 import { createBrowserRouter } from 'react-router-dom'
-
-import { Dashboard } from './Components/Dashboard'
+import { AuthProvider } from './Context/AuthContext'
 
 import { UnauthenticatedLayout } from './pages/layout/unauthenticatedLayout'
 import { AuthenticatedLayout } from './pages/layout/authenticatedLayout'
+import { Dashboard } from './pages/dashboard'
 import { SignIn } from './pages/signIn'
 import { SignUp } from './pages/signUp'
 
 export const router = createBrowserRouter([
   {
-    element: <UnauthenticatedLayout />,
+    element: (
+      <AuthProvider>
+        <UnauthenticatedLayout />
+      </AuthProvider>
+    ),
     children: [
       {
         path: '*',
@@ -26,7 +30,11 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    element: <AuthenticatedLayout />,
+    element: (
+      <AuthProvider>
+        <AuthenticatedLayout />
+      </AuthProvider>
+    ),
     children: [
       {
         path: '/dashboard',

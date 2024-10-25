@@ -1,0 +1,44 @@
+.headerContainer {
+  width: 100%;
+  background-color: var(--gray-700);
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: small;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
+.userContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.signOutContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--blue-dark);
+  color: var(--gray-100);
+  border-radius: 50px;
+  cursor: pointer;
+  
+  &:hover {
+  background-color: var(--blue);
+  }
+
+  transition: all 200ms;
+}
+
+.headerImage {
+  width: 100%;
+  padding: 4.5rem 0 5rem 0;
+  display: flex;
+  justify-content: center;
+}

@@ -1,8 +1,8 @@
 import { useTasks } from '../../Context/TasksContext'
-import { Task } from './Parts/Task'
-import { UpdateTaskModal } from './Parts/UpdateTaskModal'
-import { TaskForm } from './Parts/TaskForm'
-import { EmptyTasks } from './Parts/EmptyTasks'
+import { Task } from './components/Task'
+import { UpdateTaskModal } from './components/UpdateTaskModal'
+import { TaskForm } from './components/TaskForm'
+import { EmptyTasks } from './components/EmptyTasks'
 
 import styles from './Dashboard.module.scss'
 
