@@ -13,7 +13,7 @@ const schema = z.object({
     .string()
     .min(1, { message: 'Informe o e-mail' })
     .email({ message: 'Informe um e-mail válido' }),
-  password: z.string().min(1, { message: 'Informe a senha' }),
+  password: z.string().min(7, { message: 'Deve ter no mínimo 7 caracteres' }),
 })
 
 type SignInUserInterface = z.infer<typeof schema>

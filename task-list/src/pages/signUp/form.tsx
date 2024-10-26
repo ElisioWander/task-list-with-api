@@ -14,14 +14,10 @@ const schema = z
       .string()
       .min(1, { message: 'Informe o email' })
       .email({ message: 'Informe um e-mail válido' }),
-    password: z
-      .string()
-      .min(1, { message: 'Informe a senha' })
-      .length(7, { message: 'Deve ter no mínimo 7 caracteres' }),
+    password: z.string().min(7, { message: 'Deve ter no mínimo 7 caracteres' }),
     passwordConfirmation: z
       .string()
-      .min(1, { message: 'Confirme a senha' })
-      .length(7, { message: 'Deve ter no mínimo 7 caracteres' }),
+      .min(7, { message: 'Deve ter no mínimo 7 caracteres' }),
   })
   .refine((data) => data.password === data.passwordConfirmation, {
     message: 'As senhas devem ser iguais',

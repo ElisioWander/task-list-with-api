@@ -8,7 +8,6 @@ export type TaskData = {
 
 type TasksContextData = {
   currentTask: TaskData | null
-  markTaskAsChecked: () => void
   setCurrentTask: (task: TaskData) => void
 }
 
@@ -25,15 +24,10 @@ export function TasksProvider({ children }: TasksProviderProps) {
     setCurrentTask(task)
   }
 
-  function markTaskAsChecked() {
-    // dispatch(markTaskAsCheckedAction())
-  }
-
   return (
     <TasksContext.Provider
       value={{
         currentTask,
-        markTaskAsChecked,
         setCurrentTask: handleSetTask,
       }}
     >

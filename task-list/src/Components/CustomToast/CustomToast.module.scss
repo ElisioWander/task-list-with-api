@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.button {
+  margin-left: 8;
+  background-color: transparent;
+  border: none;
+  color: var(--blue-dark);
+  cursor: pointer;
+
+  &:hover {
+  color: var(--blue);
+  }
+
+  font-size: medium;
+
+  transition: all 200ms;
+}

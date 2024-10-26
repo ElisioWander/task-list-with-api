@@ -7,6 +7,7 @@ import { useTaskUpdate } from '../../../api/useTaskUpdate'
 import { useModal } from '../../../Context/ModalContext'
 import { Button } from '../../../Components/Button'
 import { Input } from '../../../Components/input'
+import { Modal } from '../../../Components/Modal'
 
 import styles from './UpdateTaskModal.module.scss'
 import { z } from 'zod'
@@ -55,33 +56,26 @@ export function UpdateTaskModal() {
 
   const editTaskValueIsEmpty = !watch('description')
 
-  return isOpenMdal ? (
-    <div className={styles.modalOverlay}>
-      <div className={styles.modalContainer}>
-        <header>
-          <h2>Editar tarefa</h2>
-        </header>
-        <form className={styles.modalContent}>
-          <Input
-            label="Tarefa"
-            placeholder="Editar tarefa"
-            error={errors.description}
-            {...register('description')}
-          />
-          <div className={styles.buttons}>
-            <Button onClick={handleCloseModal}>Cancelar</Button>
-            <Button
-              disabled={editTaskValueIsEmpty}
-              isLoading={isPending}
-              onClick={handleSubmit(handleUpdateTaskDescription)}
-            >
-              Editar
-            </Button>
-          </div>
-        </form>
-      </div>
-    </div>
-  ) : (
-    <></>
+  return (
+    <Modal title="Editar Tarefa" isOpen={isOpenMdal} onClose={handleCloseModal}>
+      <form className={styles.form}>
+        <Input
+          label="Tarefa"
+          placeholder="Editar tarefa"
+          error={errors.description}
+          {...register('description')}
+        />
+        <div className={styles.buttons}>
+          <Button onClick={handleCloseModal}>Cancelar</Button>
+          <Button
+            disabled={editTaskValueIsEmpty}
+            isLoading={isPending}
+            onClick={handleSubmit(handleUpdateTaskDescription)}
+          >
+            Editar
+          </Button>
+        </div>
+      </form>
+    </Modal>
   )
 }

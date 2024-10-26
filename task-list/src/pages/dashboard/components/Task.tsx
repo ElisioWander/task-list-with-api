@@ -5,6 +5,7 @@ import styles from './Task.module.scss'
 import { Checkbox } from '../../../Components/CheckBox'
 import { useTaskContext } from '../../../Context/TasksContext'
 import { useTaskUpdate } from '../../../api/useTaskUpdate'
+import { useTaskRemove } from '../../../api/useTaskRemove'
 
 type TaskData = {
   id: string
@@ -21,6 +22,7 @@ export function Task({ task }: TaskProps) {
   const { setCurrentTask, currentTask } = useTaskContext()
 
   const { mutateAsync: updateTask, isPending } = useTaskUpdate()
+  const { mutateAsync: removeTask, isPending: isDeleting } = useTaskRemove()
 
   function handleSetCurrentTask() {
     if (task?.id) {
@@ -34,6 +36,10 @@ export function Task({ task }: TaskProps) {
       description: currentTask?.description || '',
       is_checked: isChecked,
     })
+  }
+
+  async function handleRemoveTask(taskId: string) {
+    await removeTask(taskId)
   }
 
   return (
@@ -62,9 +68,13 @@ export function Task({ task }: TaskProps) {
         )}
       </div>
 
-      <button>
-        <Trash size={14} />
-      </button>
+      {isDeleting ? (
+        <span className={styles.spinner} />
+      ) : (
+        <button onClick={() => handleRemoveTask(currentTask?.id || '')}>
+          <Trash size={20} />
+        </button>
+      )}
     </div>
   )
 }
