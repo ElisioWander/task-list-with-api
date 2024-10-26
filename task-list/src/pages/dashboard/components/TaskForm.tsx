@@ -1,48 +1,63 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { PlusCircle } from 'phosphor-react'
-import { ChangeEvent, FormEvent, InvalidEvent, useState } from 'react'
-import { useTasks } from '../../../Context/TasksContext'
+import { useForm } from 'react-hook-form'
+
+import { useTaskCreate } from '../../../api/useTaskCreate'
+import { Button } from '../../../Components/Button'
+import { Input } from '../../../Components/input'
 
 import styles from './TaskForm.module.scss'
+import { z } from 'zod'
+
+const schema = z.object({
+  description: z.string().min(1, { message: 'Informe a tarefa' }),
+})
+
+type CreateTaskInterface = z.infer<typeof schema>
 
 export function TaskForm() {
-  const [newTask, setNewTask] = useState('')
+  const { mutateAsync: createTask, isPending } = useTaskCreate()
 
-  const { createNewTask } = useTasks()
+  const {
+    handleSubmit,
+    register,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<CreateTaskInterface>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      description: '',
+    },
+  })
 
-  function handleGetInputValue(event: ChangeEvent<HTMLInputElement>) {
-    setNewTask(event.target.value)
+  async function handleCreateTask(data: CreateTaskInterface) {
+    await createTask({
+      description: data.description,
+      is_checked: false,
+    })
+
+    reset()
   }
 
-  function handleNewTaskInputValueInvalid(
-    event: InvalidEvent<HTMLInputElement>,
-  ) {
-    event.currentTarget.setCustomValidity('Este campo é obrigatório')
-  }
-
-  function handleCreateNewTask(event: FormEvent) {
-    event.preventDefault()
-
-    createNewTask(newTask)
-    setNewTask('')
-  }
-
-  const isNewTaskEmpty = !newTask
+  const isNewTaskEmpty = !watch('description')
 
   return (
-    <form onSubmit={handleCreateNewTask} className={styles.form}>
-      <input
-        type="text"
+    <form className={styles.form}>
+      <Input
         placeholder="Adicionar uma nova tarefa"
-        value={newTask}
-        required
-        onInvalid={handleNewTaskInputValueInvalid}
-        onChange={handleGetInputValue}
+        error={errors.description}
+        {...register('description')}
       />
 
-      <button type="submit" disabled={isNewTaskEmpty}>
+      <Button
+        disabled={isNewTaskEmpty}
+        isLoading={isPending}
+        onClick={handleSubmit(handleCreateTask)}
+      >
         Criar
         <PlusCircle size={16} weight={'bold'} />
-      </button>
+      </Button>
     </form>
   )
 }

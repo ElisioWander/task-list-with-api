@@ -36,11 +36,15 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 5rem;
+  padding: 1rem;
 
   @media (min-width: 1024px) {
     width: 100%;
     max-width: 560px;
+
+    .rightSection {
+      padding: 5rem;
+    }
   }
 
   .rightSectionContainer {

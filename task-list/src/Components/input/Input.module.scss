@@ -1,4 +1,5 @@
 .container {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -10,7 +11,7 @@
 
   input {
     flex: 1;
-    padding: 0.5rem 1rem;
+    padding: 1rem;
 
     line-height: 1.4rem;
     border: solid 1px var(--gray-700);

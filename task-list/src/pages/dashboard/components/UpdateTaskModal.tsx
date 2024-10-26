@@ -1,57 +1,82 @@
-import { ChangeEvent, FormEvent, InvalidEvent, useState } from 'react'
+import { useEffect } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+
+import { useTaskContext } from '../../../Context/TasksContext'
+import { useTaskUpdate } from '../../../api/useTaskUpdate'
 import { useModal } from '../../../Context/ModalContext'
-import { useTasks } from '../../../Context/TasksContext'
+import { Button } from '../../../Components/Button'
+import { Input } from '../../../Components/input'
 
 import styles from './UpdateTaskModal.module.scss'
+import { z } from 'zod'
+
+const schema = z.object({
+  description: z.string().min(1, { message: 'Informe a tarefa' }),
+})
+
+type UpdateTaskDescriptionInterface = z.infer<typeof schema>
 
 export function UpdateTaskModal() {
-  const [editTask, setEditTask] = useState('')
-
   const { isOpenMdal, handleCloseModal } = useModal()
-  const { updateTask } = useTasks()
+  const { currentTask } = useTaskContext()
 
-  function handleGetEditInputValue(event: ChangeEvent<HTMLInputElement>) {
-    const inputValue = event.target.value
+  const { mutateAsync: updateTask, isPending } = useTaskUpdate()
 
-    setEditTask(inputValue)
-  }
+  const {
+    handleSubmit,
+    register,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<UpdateTaskDescriptionInterface>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      description: '',
+    },
+  })
 
-  function handleEditTaskInputValueInvalid(
-    event: InvalidEvent<HTMLInputElement>,
-  ) {
-    event.currentTarget.setCustomValidity('Este campo é obrigatório')
-  }
+  useEffect(() => {
+    setValue('description', currentTask?.description || '')
+  }, [setValue, currentTask])
 
-  function handleUpdateTask(event: FormEvent) {
-    event.preventDefault()
+  async function handleUpdateTaskDescription({
+    description,
+  }: UpdateTaskDescriptionInterface) {
+    const { id, isChecked } = currentTask || {}
 
-    updateTask(editTask)
-
+    await updateTask({
+      id,
+      description,
+      is_checked: isChecked || false,
+    })
     handleCloseModal()
-    setEditTask('')
   }
 
-  const editTaskValueIsEmpty = !editTask
+  const editTaskValueIsEmpty = !watch('description')
 
   return isOpenMdal ? (
     <div className={styles.modalOverlay}>
       <div className={styles.modalContainer}>
-        <form onSubmit={handleUpdateTask} className={styles.modalContent}>
-          <input
-            type="text"
-            name="edit"
-            value={editTask}
+        <header>
+          <h2>Editar tarefa</h2>
+        </header>
+        <form className={styles.modalContent}>
+          <Input
+            label="Tarefa"
             placeholder="Editar tarefa"
-            onInvalid={handleEditTaskInputValueInvalid}
-            onChange={handleGetEditInputValue}
+            error={errors.description}
+            {...register('description')}
           />
           <div className={styles.buttons}>
-            <button type="submit" disabled={editTaskValueIsEmpty}>
+            <Button onClick={handleCloseModal}>Cancelar</Button>
+            <Button
+              disabled={editTaskValueIsEmpty}
+              isLoading={isPending}
+              onClick={handleSubmit(handleUpdateTaskDescription)}
+            >
               Editar
-            </button>
-            <button type="button" onClick={handleCloseModal}>
-              Cancelar
-            </button>
+            </Button>
           </div>
         </form>
       </div>

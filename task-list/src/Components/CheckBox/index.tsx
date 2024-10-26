@@ -4,7 +4,7 @@ import styles from './CheckBox.module.scss'
 
 interface CheckboxProps {
   isTaskChecked: boolean
-  onMarkTaskAsChecked: () => void
+  onMarkTaskAsChecked: (isChecked: boolean) => void
 }
 
 export function Checkbox({
@@ -16,7 +16,7 @@ export function Checkbox({
       <input
         type="checkbox"
         checked={isTaskChecked}
-        onClick={onMarkTaskAsChecked}
+        onClick={() => onMarkTaskAsChecked(!isTaskChecked)}
         readOnly
       />
       <span className={styles.checkMark}>

@@ -1,4 +1,5 @@
-import { useTasks } from '../../Context/TasksContext'
+import { useTaskGetAll } from '../../api/useTaskGetAll'
+
 import { Task } from './components/Task'
 import { UpdateTaskModal } from './components/UpdateTaskModal'
 import { TaskForm } from './components/TaskForm'
@@ -7,11 +8,12 @@ import { EmptyTasks } from './components/EmptyTasks'
 import styles from './Dashboard.module.scss'
 
 export function Dashboard() {
-  const { tasks } = useTasks()
+  const { data } = useTaskGetAll()
 
-  const completedTasks = tasks.filter((task) => task.isChecked === true)
-  const parsedTasks = tasks.map((task) => <Task key={task.id} task={task} />)
-  const isTasksEmpty = tasks.length === 0
+  const completedTasks = data?.data?.filter(
+    (task) => task.attributes.isChecked === true,
+  )
+  const isTasksEmpty = data?.data?.length === 0
 
   return (
     <>
@@ -22,18 +24,31 @@ export function Dashboard() {
           <div className={styles.headerTasks}>
             <div>
               <p>Tarefas criadas</p>
-              <span>{tasks.length}</span>
+              <span>{data?.data?.length}</span>
             </div>
             <div>
               <p>Concluidas</p>
               <span>
-                {completedTasks.length} de {tasks.length}
+                {completedTasks?.length} de {data?.data?.length}
               </span>
             </div>
           </div>
 
           <div className={styles.tasks}>
-            {isTasksEmpty ? <EmptyTasks /> : parsedTasks}
+            {isTasksEmpty ? (
+              <EmptyTasks />
+            ) : (
+              data?.data?.map((task) => (
+                <Task
+                  key={task.id}
+                  task={{
+                    description: task.attributes.description,
+                    id: task.id,
+                    isChecked: task.attributes.isChecked,
+                  }}
+                />
+              ))
+            )}
           </div>
         </main>
       </div>

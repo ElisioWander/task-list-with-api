@@ -1,7 +1,7 @@
 import { SignOut, User } from 'phosphor-react'
 import todoLogo from '../../assets/Logo.svg'
-import styles from './Header.module.scss'
 import { useAuth } from '../../Context/AuthContext'
+import styles from './Header.module.scss'
 
 export function Header() {
   const { tokenInfo, signOut } = useAuth()

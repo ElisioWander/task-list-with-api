@@ -5,7 +5,8 @@ module Api
 
     def index
       if current_user
-        render json: TaskSerializer.new(current_user.tasks), status: :ok
+        tasks = current_user.tasks.order(created_at: :asc)
+        render json: TaskSerializer.new(tasks), status: :ok
       else
         render json: { message: "Current user not found" }, status: :unauthorized
       end
