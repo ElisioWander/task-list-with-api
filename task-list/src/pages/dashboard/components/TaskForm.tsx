@@ -43,18 +43,15 @@ export function TaskForm() {
   const isNewTaskEmpty = !watch('description')
 
   return (
-    <form className={styles.form}>
+    <form onSubmit={handleSubmit(handleCreateTask)} className={styles.form}>
       <Input
         placeholder="Adicionar uma nova tarefa"
+        autoFocus
         error={errors.description}
         {...register('description')}
       />
 
-      <Button
-        disabled={isNewTaskEmpty}
-        isLoading={isPending}
-        onClick={handleSubmit(handleCreateTask)}
-      >
+      <Button type="submit" disabled={isNewTaskEmpty} isLoading={isPending}>
         Criar
         <PlusCircle size={16} weight={'bold'} />
       </Button>

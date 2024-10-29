@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   devise_for :users, skip: [:sessions, :registrations, :passwords]
   resources :tasks, only: [:index, :create, :update, :destroy, :restore]
+  resources :password, only: [:create]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -21,6 +22,9 @@ Rails.application.routes.draw do
     post 'auth/sign-up', to: 'auth#sign_up'
     post 'auth/sign-in', to: 'auth#sign_in'
     post 'auth/change-password', to: 'auth#change_password'
+
+    post 'password/recover', to: 'password#recover'
+    post 'password/reset', to: 'password#reset'
 
   end
 end

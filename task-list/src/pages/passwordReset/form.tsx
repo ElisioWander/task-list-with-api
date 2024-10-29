@@ -4,16 +4,13 @@ import { useForm } from 'react-hook-form'
 import { Button } from '../../Components/Button'
 import { Input } from '../../Components/input'
 
+import { useUserPasswordReset } from '../../api/useUserPasswordReset'
 import styles from './Form.module.scss'
 import { z } from 'zod'
-import { useAuth } from '../../Context/AuthContext'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const schema = z
   .object({
-    email: z
-      .string()
-      .min(1, { message: 'Informe o email' })
-      .email({ message: 'Informe um e-mail válido' }),
     password: z.string().min(7, { message: 'Deve ter no mínimo 7 caracteres' }),
     passwordConfirmation: z
       .string()
@@ -24,37 +21,41 @@ const schema = z
     path: ['passwordConfirmation'],
   })
 
-type SignUpUserInterface = z.infer<typeof schema>
+type PasswordResetUserInterface = z.infer<typeof schema>
 
 export function Form() {
-  const { signUp, isAuthenticating } = useAuth()
+  const { token } = useParams()
+  const navigate = useNavigate()
+
+  const { mutateAsync: userPasswordReset, isPending } = useUserPasswordReset()
 
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<SignUpUserInterface>({
+  } = useForm<PasswordResetUserInterface>({
     resolver: zodResolver(schema),
   })
 
-  async function onSubmit(signUpUserData: SignUpUserInterface) {
-    signUp(signUpUserData)
+  async function onSubmit(userPasswordResetData: PasswordResetUserInterface) {
+    await userPasswordReset({
+      user: {
+        token: token || '',
+        password: userPasswordResetData.password,
+        password_confirmation: userPasswordResetData.passwordConfirmation,
+      },
+    })
+
+    navigate('/sign-in')
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.container}>
       <Input
-        label="E-mail"
-        type="email"
-        placeholder="Seu e-mail"
-        autoFocus
-        error={errors.email}
-        {...register('email')}
-      />
-      <Input
         label="Senha"
         type="password"
         placeholder="Deve ter no mínimo 7 caracteres"
+        autoFocus
         error={errors.password}
         {...register('password')}
       />
@@ -66,8 +67,8 @@ export function Form() {
         {...register('passwordConfirmation')}
       />
 
-      <Button type="submit" isLoading={isAuthenticating}>
-        Cadastre-se
+      <Button type="submit" isLoading={isPending}>
+        Alterar senha
       </Button>
     </form>
   )

@@ -3,6 +3,8 @@ import { AuthProvider } from './Context/AuthContext'
 
 import { UnauthenticatedLayout } from './pages/layout/unauthenticatedLayout'
 import { AuthenticatedLayout } from './pages/layout/authenticatedLayout'
+import { PasswordRecover } from './pages/passwordRecover'
+import { PasswordReset } from './pages/passwordReset'
 import { Dashboard } from './pages/dashboard'
 import { SignIn } from './pages/signIn'
 import { SignUp } from './pages/signUp'
@@ -26,6 +28,14 @@ export const router = createBrowserRouter([
       {
         path: '/sign-up',
         element: <SignUp />,
+      },
+      {
+        path: '/password-recover',
+        element: <PasswordRecover />,
+      },
+      {
+        path: '/password-reset/:token',
+        element: <PasswordReset />,
       },
     ],
   },

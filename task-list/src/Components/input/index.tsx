@@ -7,11 +7,12 @@ interface InputBaseProps {
   type?: string
   value?: string | number | readonly string[]
   placeholder?: string
+  autoFocus?: boolean
   error?: FieldError
 }
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputBaseProps> = (
-  { label, value, type = 'text', error, placeholder, ...rest },
+  { label, value, type = 'text', error, autoFocus, placeholder, ...rest },
   ref,
 ) => {
   return (
@@ -22,6 +23,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputBaseProps> = (
         id={type}
         value={value}
         placeholder={placeholder}
+        autoFocus={autoFocus}
         ref={ref}
         {...rest}
       />

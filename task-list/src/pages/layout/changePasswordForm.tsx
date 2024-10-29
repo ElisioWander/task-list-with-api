@@ -55,10 +55,11 @@ export function ChangePasswordForm({ onClose }: ChangePasswordFormProps) {
   }
 
   return (
-    <form className={styles.form}>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
       <Input
         type="password"
         label="Senha atual"
+        autoFocus
         error={errors.currentPassword}
         {...register('currentPassword')}
       />
@@ -75,7 +76,7 @@ export function ChangePasswordForm({ onClose }: ChangePasswordFormProps) {
         {...register('passwordConfirmation')}
       />
 
-      <Button isLoading={isPending} onClick={handleSubmit(onSubmit)}>
+      <Button type="submit" isLoading={isPending}>
         Alterar senha
       </Button>
     </form>

@@ -7,6 +7,7 @@ import { Input } from '../../Components/input'
 import { useAuth } from '../../Context/AuthContext'
 import styles from './Form.module.scss'
 import { z } from 'zod'
+import { useNavigate } from 'react-router-dom'
 
 const schema = z.object({
   email: z
@@ -19,6 +20,8 @@ const schema = z.object({
 type SignInUserInterface = z.infer<typeof schema>
 
 export function Form() {
+  const navigate = useNavigate()
+
   const { signIn, isAuthenticating } = useAuth()
 
   const {
@@ -34,10 +37,11 @@ export function Form() {
   }
 
   return (
-    <form className={styles.container}>
+    <form onSubmit={handleSubmit(onSubmit)} className={styles.container}>
       <Input
         label="E-mail"
         type="email"
+        autoFocus
         placeholder="Seu e-mail"
         error={errors.email}
         {...register('email')}
@@ -51,10 +55,10 @@ export function Form() {
       />
 
       <div className={styles.forgotPassword}>
-        <a href="#">Esqueci minha senha</a>
+        <a onClick={() => navigate('/password-recover')}>Esqueci minha senha</a>
       </div>
 
-      <Button isLoading={isAuthenticating} onClick={handleSubmit(onSubmit)}>
+      <Button type="submit" isLoading={isAuthenticating}>
         Entrar
       </Button>
     </form>

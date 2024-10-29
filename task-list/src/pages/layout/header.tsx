@@ -1,4 +1,4 @@
-import { Password, SignOut, User } from 'phosphor-react'
+import { LockKey as LockKeyIcon, SignOut, User } from 'phosphor-react'
 import todoLogo from '../../assets/Logo.svg'
 import { useAuth } from '../../Context/AuthContext'
 import styles from './Header.module.scss'
@@ -25,7 +25,7 @@ export function Header() {
             className={styles.changePasswordContainer}
             onClick={() => setOpen(true)}
           >
-            <Password fontSize={24} />
+            <LockKeyIcon fontSize={24} />
           </div>
 
           <div className={styles.signOutContainer} onClick={() => signOut()}>
