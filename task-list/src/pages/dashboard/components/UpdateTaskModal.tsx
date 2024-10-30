@@ -58,9 +58,13 @@ export function UpdateTaskModal() {
 
   return (
     <Modal title="Editar Tarefa" isOpen={isOpenMdal} onClose={handleCloseModal}>
-      <form className={styles.form}>
+      <form
+        onSubmit={handleSubmit(handleUpdateTaskDescription)}
+        className={styles.form}
+      >
         <Input
           label="Tarefa"
+          autoFocus
           placeholder="Editar tarefa"
           error={errors.description}
           {...register('description')}
@@ -68,9 +72,9 @@ export function UpdateTaskModal() {
         <div className={styles.buttons}>
           <Button onClick={handleCloseModal}>Cancelar</Button>
           <Button
+            type="submit"
             disabled={editTaskValueIsEmpty}
             isLoading={isPending}
-            onClick={handleSubmit(handleUpdateTaskDescription)}
           >
             Editar
           </Button>

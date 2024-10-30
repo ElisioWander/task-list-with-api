@@ -2,12 +2,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import { api } from '../services/api'
 import { CustomToast } from '../Components/CustomToast'
+import { extractError } from '../utils/extractError'
 
 export function useTaskRemove() {
   const queryClient = useQueryClient()
 
   async function handleRequest(taskId: string) {
-    await api.delete('/tasks', {
+    return api.delete('/tasks', {
       params: { id: taskId },
     })
   }
@@ -21,11 +22,11 @@ export function useTaskRemove() {
 
   return useMutation({
     mutationFn: handleRequest,
-    onSuccess: (_, taskId) => {
+    onSuccess: (data, taskId) => {
       toast(
         ({ closeToast }) => (
           <CustomToast
-            message="Tarefa deletada"
+            message={data?.data?.message || ''}
             onClick={async () => {
               await restoreTask(taskId)
               closeToast()
@@ -34,12 +35,14 @@ export function useTaskRemove() {
         ),
         {
           autoClose: 10000,
+          closeOnClick: false,
+          type: 'success',
         },
       )
 
       queryClient.invalidateQueries({ queryKey: ['TASKS'] })
     },
 
-    onError: (error) => toast(error.message),
+    onError: extractError,
   })
 }

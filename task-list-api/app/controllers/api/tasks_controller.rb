@@ -39,7 +39,7 @@ module Api
 
     def destroy
       if @task.destroy
-        render json: { message: "Tarefa excluída com sucesso!" }, status: :ok
+        render json: { message: "Tarefa excluída" }, status: :ok
       else
         render json: { errors: "A tarefa não pode ser excluida com sucesso!" }, status: :unprocessable_entity
       end

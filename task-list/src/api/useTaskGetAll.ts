@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
-import { toast } from 'react-toastify'
 
 import { api } from '../services/api'
 import { TaskResponseDTO } from './TaskResponseDTO'
 import { HttpResponseInterface } from '../interfaces/HttpResponseInterface'
+import { extractError } from '../utils/extractError'
 
 export function useTaskGetAll() {
   async function handleRequest() {
@@ -17,7 +17,7 @@ export function useTaskGetAll() {
   })
 
   if (error) {
-    toast(error.message)
+    extractError(error)
   }
 
   return rest

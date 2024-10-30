@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
-import { toast } from 'react-toastify'
 import { api } from '../services/api'
 import { UserPasswordRecoverDTO } from './UserPasswordRecoverDTO'
+import { extractSuccessMessage } from '../utils/extractSuccessMessage'
+import { extractError } from '../utils/extractError'
 
 export function useUserPasswordRecover() {
   async function handleRequest(data: UserPasswordRecoverDTO) {
@@ -10,13 +11,7 @@ export function useUserPasswordRecover() {
 
   return useMutation({
     mutationFn: handleRequest,
-    onSuccess: () => {
-      toast(
-        'As instruções de recuperação de senha foram enviadas para o seu e-mail',
-      )
-    },
-    onError: (error) => {
-      toast(error.message)
-    },
+    onSuccess: extractSuccessMessage,
+    onError: extractError,
   })
 }

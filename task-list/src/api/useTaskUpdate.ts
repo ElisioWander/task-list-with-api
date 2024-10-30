@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { toast } from 'react-toastify'
 import { api } from '../services/api'
 import { TaskRequestDTO } from './TaskRequestDTO'
+import { extractError } from '../utils/extractError'
 
 export function useTaskUpdate() {
   const queryClient = useQueryClient()
@@ -23,8 +23,6 @@ export function useTaskUpdate() {
         queryKey: ['TASKS'],
       })
     },
-    onError: (error) => {
-      toast(error.message)
-    },
+    onError: extractError,
   })
 }

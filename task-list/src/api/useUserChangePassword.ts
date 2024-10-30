@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
-import { toast } from 'react-toastify'
 import { api } from '../services/api'
 import { UserChangePasswordDTO } from './UserChangePasswordRequestDTO'
+import { extractError } from '../utils/extractError'
+import { extractSuccessMessage } from '../utils/extractSuccessMessage'
 
 export function useUserChangePassword() {
   async function handleRequest(data: UserChangePasswordDTO) {
@@ -10,11 +11,7 @@ export function useUserChangePassword() {
 
   return useMutation({
     mutationFn: handleRequest,
-    onSuccess: () => {
-      toast('Senha alterada com sucesso')
-    },
-    onError: (error) => {
-      toast(error.message)
-    },
+    onSuccess: extractSuccessMessage,
+    onError: extractError,
   })
 }

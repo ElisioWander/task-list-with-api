@@ -19,7 +19,7 @@ export function App() {
         toastClassName={styles.customToast}
         bodyClassName={styles.customToastBody}
         progressClassName={styles.customToastProgressBar}
-        hideProgressBar
+        closeOnClick
       />
     </QueryClientProvider>
   )

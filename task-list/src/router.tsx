@@ -22,6 +22,10 @@ export const router = createBrowserRouter([
         element: <h1>Page Not Found</h1>,
       },
       {
+        path: '/',
+        element: <SignIn />,
+      },
+      {
         path: '/sign-in',
         element: <SignIn />,
       },
