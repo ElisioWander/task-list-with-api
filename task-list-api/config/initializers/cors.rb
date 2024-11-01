@@ -8,7 +8,12 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     # later change to the domain of the frontend app
-    origins "*"
+    if Rails.env.development?
+      origins "*"
+    else
+      origins "https://task-list-with-api.vercel.app"
+    end
+    
 
     resource "*",
       headers: :any,

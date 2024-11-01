@@ -87,4 +87,19 @@ Rails.application.configure do
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # Habilita cache em controladores para melhorar a performance em produção
+  config.action_controller.perform_caching = true
+
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address: 'smtp.gmail.com',
+    port: 587,
+    user_name: ENV['GMAIL_ACCESS_KEY'],
+    password: ENV['GMAIL_SECRET_KEY'],
+    authentication: 'plain',
+    enable_starttls_auto: true
+  }
+
+  config.action_mailer.default_url_options = { host: 'task-list-api.fly.dev', protocol: 'https' }
 end

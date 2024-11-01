@@ -1,0 +1,21 @@
+databases:
+  - name: task_list_api
+    databaseName: task_list_api_production
+    user: task_list_api
+    plan: free
+
+services:
+  - type: web
+    name: task_list_api
+    runtime: ruby
+    plan: free
+    buildCommand: "./bin/render-build.sh"
+    # preDeployCommand: "bundle exec rails db:migrate" # disponível apenas em instâncias pagas
+    startCommand: "bundle exec rails server -e production"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: task_list_api
+          property: connectionString
+      - key: WEB_CONCURRENCY
+        value: 2
