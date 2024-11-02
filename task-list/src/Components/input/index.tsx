@@ -1,4 +1,9 @@
-import { forwardRef, ForwardRefRenderFunction } from 'react'
+import {
+  forwardRef,
+  ForwardRefRenderFunction,
+  useEffect,
+  useState,
+} from 'react'
 import { FieldError } from 'react-hook-form'
 import styles from './Input.module.scss'
 
@@ -15,6 +20,16 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputBaseProps> = (
   { label, value, type = 'text', error, autoFocus, placeholder, ...rest },
   ref,
 ) => {
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768)
+
+  useEffect(() => {
+    const handleResize = () => setIsDesktop(window.innerWidth >= 768)
+
+    window.addEventListener('resize', handleResize)
+
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   return (
     <div className={styles.container}>
       {label && <label>{label}</label>}
@@ -23,7 +38,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputBaseProps> = (
         id={type}
         value={value}
         placeholder={placeholder}
-        autoFocus={autoFocus}
+        autoFocus={isDesktop ? autoFocus : false}
         ref={ref}
         {...rest}
       />

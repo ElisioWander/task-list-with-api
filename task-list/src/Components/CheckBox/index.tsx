@@ -16,7 +16,10 @@ export function Checkbox({
       <input
         type="checkbox"
         checked={isTaskChecked}
-        onClick={() => onMarkTaskAsChecked(!isTaskChecked)}
+        onClick={(e) => {
+          e.stopPropagation()
+          onMarkTaskAsChecked(!isTaskChecked)
+        }}
         readOnly
       />
       <span className={styles.checkMark}>

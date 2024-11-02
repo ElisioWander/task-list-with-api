@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
-import { useTaskContext } from '../../../Context/TasksContext'
 import { useTaskUpdate } from '../../../api/useTaskUpdate'
 import { useModal } from '../../../Context/ModalContext'
 import { Button } from '../../../Components/Button'
@@ -10,6 +9,8 @@ import { Input } from '../../../Components/input'
 import { Modal } from '../../../Components/Modal'
 
 import styles from './UpdateTaskModal.module.scss'
+import { TaskData } from './Task'
+
 import { z } from 'zod'
 
 const schema = z.object({
@@ -19,8 +20,11 @@ const schema = z.object({
 type UpdateTaskDescriptionInterface = z.infer<typeof schema>
 
 export function UpdateTaskModal() {
-  const { isOpenMdal, handleCloseModal } = useModal()
-  const { currentTask } = useTaskContext()
+  const {
+    isOpenMdal,
+    handleCloseModal,
+    data: currentTask,
+  } = useModal<TaskData>()
 
   const { mutateAsync: updateTask, isPending } = useTaskUpdate()
 

@@ -3,11 +3,10 @@ import { useModal } from '../../../Context/ModalContext'
 
 import styles from './Task.module.scss'
 import { Checkbox } from '../../../Components/CheckBox'
-import { useTaskContext } from '../../../Context/TasksContext'
 import { useTaskUpdate } from '../../../api/useTaskUpdate'
 import { useTaskRemove } from '../../../api/useTaskRemove'
 
-type TaskData = {
+export type TaskData = {
   id: string
   description: string
   isChecked: boolean
@@ -19,21 +18,14 @@ interface TaskProps {
 
 export function Task({ task }: TaskProps) {
   const { handleOpenModal } = useModal()
-  const { setCurrentTask, currentTask } = useTaskContext()
 
   const { mutateAsync: updateTask, isPending } = useTaskUpdate()
   const { mutateAsync: removeTask, isPending: isDeleting } = useTaskRemove()
 
-  function handleSetCurrentTask() {
-    if (task?.id) {
-      setCurrentTask(task)
-    }
-  }
-
   async function handleUpdateTask(isChecked: boolean) {
     await updateTask({
-      id: currentTask?.id,
-      description: currentTask?.description || '',
+      id: task?.id,
+      description: task?.description || '',
       is_checked: isChecked,
     })
   }
@@ -43,7 +35,7 @@ export function Task({ task }: TaskProps) {
   }
 
   return (
-    <div className={styles.task} onMouseEnter={handleSetCurrentTask}>
+    <div className={styles.task}>
       {isPending ? (
         <span className={styles.spinner} />
       ) : (
@@ -57,7 +49,7 @@ export function Task({ task }: TaskProps) {
         className={styles.descriptionContainer}
         onClick={() => {
           if (!task.isChecked) {
-            handleOpenModal()
+            handleOpenModal(task)
           }
         }}
       >
@@ -71,7 +63,7 @@ export function Task({ task }: TaskProps) {
       {isDeleting ? (
         <span className={styles.spinner} />
       ) : (
-        <button onClick={() => handleRemoveTask(currentTask?.id || '')}>
+        <button onClick={() => handleRemoveTask(task?.id || '')}>
           <Trash size={20} />
         </button>
       )}

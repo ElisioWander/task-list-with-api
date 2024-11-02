@@ -1,8 +1,9 @@
 import { createContext, ReactNode, useContext, useState } from 'react'
 
-type ModalContextData = {
+type ModalContextData<T> = {
   isOpenMdal: boolean
-  handleOpenModal: () => void
+  data?: T | null
+  handleOpenModal: (data?: T | null) => void
   handleCloseModal: () => void
 }
 
@@ -10,15 +11,18 @@ interface ModalContextPrviderProps {
   children: ReactNode
 }
 
-const ModalContext = createContext({} as ModalContextData)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ModalContext = createContext({} as ModalContextData<any>)
 
-export function ModalContextPrvider({ children }: ModalContextPrviderProps) {
+export function ModalContextPrvider<T>({ children }: ModalContextPrviderProps) {
   const [isOpenMdal, setIsOpenModal] = useState(false)
+  const [data, setData] = useState<T | null | undefined>(null)
 
-  function handleOpenModal() {
+  function handleOpenModal(_data?: T | null) {
     const toggleModal = !isOpenMdal
 
     setIsOpenModal(toggleModal)
+    setData(_data)
   }
 
   function handleCloseModal() {
@@ -28,6 +32,7 @@ export function ModalContextPrvider({ children }: ModalContextPrviderProps) {
   return (
     <ModalContext.Provider
       value={{
+        data,
         isOpenMdal,
         handleOpenModal,
         handleCloseModal,
@@ -38,4 +43,6 @@ export function ModalContextPrvider({ children }: ModalContextPrviderProps) {
   )
 }
 
-export const useModal = () => useContext(ModalContext)
+export function useModal<T>() {
+  return useContext<ModalContextData<T>>(ModalContext)
+}
