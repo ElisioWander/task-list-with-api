@@ -1,10 +1,14 @@
 {
   "start_url": "https://task-list-with-api.vercel.app/",
   "name": "Task List",
+  "orientation": "any",
+  "scope": "/",
   "theme_color": "#4ea8de",
   "background_color": "#1a1a1a",
   "short_name": "Task List",
   "description": "Aplicativo de lista de tarefas",
+  "dir": "ltr",
+  "display": "standalone",
   "lang": "pt",
   "categories": [
     "productivity",
