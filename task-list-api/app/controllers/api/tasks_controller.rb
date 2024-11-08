@@ -4,53 +4,45 @@ module Api
     before_action :set_task, only: [:update, :destroy, :restore]
 
     def index
-      if current_user
-        tasks = current_user.tasks.order(created_at: :asc)
-        render json: TaskSerializer.new(tasks), status: :ok
-      else
-        render json: { message: "Usuário não encontrado!" }, status: :unauthorized
-      end
+      tasks = current_user.tasks.order(created_at: :asc)
+      render json: TaskSerializer.new(tasks), status: :ok
     end
 
     def create
-      if current_user
-        task = current_user.tasks.new(task_request_params)
-        if task.save
-          render json: TaskSerializer.new(task), status: :ok
-        else
-          render json: task.errors, status: :unprocessable_entity
-        end
-      else
-        render json: { message: "Usuário não encontrado!" }, status: :unauthorized
-      end
+      task = current_user.tasks.new(task_request_params)
+      unless task.save
+        return render json: task.errors, status: :unprocessable_entity
+      end 
+
+      render json: TaskSerializer.new(task), status: :ok
     end
 
     def update
       if @task.deleted?
-        render json: { error: "Não é possível alterar uma tarefa excluída!" }, status: :unprocessable_entity
-      else
-        if @task.update(task_request_params)
-          render json: TaskSerializer.new(@task), status: :ok
-        else
-          render json: @task.errors, status: :unprocessable_entity
-        end
+        return render json: { error: "Não é possível alterar uma tarefa excluída!" }, status: :unprocessable_entity
       end
+
+      unless @task.update(task_request_params)
+        return render json: @task.errors, status: :unprocessable_entity
+      end
+
+      render json: TaskSerializer.new(@task), status: :ok
     end
 
     def destroy
-      if @task.destroy
-        render json: { message: "Tarefa excluída" }, status: :ok
-      else
-        render json: { errors: "A tarefa não pode ser excluida com sucesso!" }, status: :unprocessable_entity
+      unless @task.destroy
+        return render json: { errors: "A tarefa não pode ser excluida com sucesso!" }, status: :unprocessable_entity
       end
+
+      render json: { message: "Tarefa excluída" }, status: :ok
     end
 
     def restore
-      if @task.restore
-        render json: { message: "Tarefa restaurada com sucesso!" }, status: :ok
-      else
-        render json: { message: "A tarefa não pode ser restaurada com sucesso!" }, status: :unprocessable_entity
+      unless @task.restore
+        return render json: { message: "A tarefa não pode ser restaurada com sucesso!" }, status: :unprocessable_entity        
       end
+
+      render json: { message: "Tarefa restaurada com sucesso!" }, status: :ok
     end
 
     private
