@@ -9,12 +9,20 @@ module Api
     end
 
     def create
-      task = current_user.tasks.new(task_request_params)
-      unless task.save
-        return render json: task.errors, status: :unprocessable_entity
-      end 
+      # task = current_user.tasks.new(task_request_params)
+      # unless task.save
+      #   return render json: task.errors, status: :unprocessable_entity
+      # end 
 
-      render json: TaskSerializer.new(task), status: :ok
+      # render json: TaskSerializer.new(task), status: :ok
+
+      results = Tasks::Create.new(current_user, task_request_params).call
+      
+      unless results.success?
+        return render json: results.errors, status: :unprocessable_entity
+      end
+
+      render json: TaskSerializer.new(results.task), status: :ok
     end
 
     def update
